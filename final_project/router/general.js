@@ -3,6 +3,7 @@ let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
+const axios = require("axios");
 
 public_users.post("/register", (req,res) => {
   //Write your code here
@@ -38,14 +39,32 @@ public_users.post("/register", (req,res) => {
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
   //Write your code here
-  res.send(JSON.stringify(books,null,4));
+    axios.get("http://localhost:5000/books")
+        .then(response => {
+            res.send(JSON.stringify(response.data,null,4));
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: "Error retrieving books",
+                error: error.message
+            });
+        });
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
-  const isbn = req.params.isbn;
-  res.send(JSON.stringify(books[isbn],null,4));
+    const isbn = req.params.isbn;
+    axios.get(`http://localhost:5000/isbn2/${isbn}`)
+        .then(response => {
+            res.send(JSON.stringify(response.data,null,4));
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: "Error retrieving books",
+                error: error.message
+            });
+        });
  });
   
 // Get book details based on author
