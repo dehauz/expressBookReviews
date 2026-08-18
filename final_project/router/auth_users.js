@@ -56,7 +56,6 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   const review = req.query.review;
   const username = req.session.username;
 
-  res.send("Review route works!");
   if (!books[isbn]) {
       return res.status(404).json({
           message: "Book not found"
@@ -75,8 +74,13 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 
   books[isbn].reviews[username] = review;
 
-  res.json(books[isbn].reviews);
+  res.status(200).json({
+    message: "Review added/updated successfully",
+    reviews: books[isbn].reviews
+  });
 });
+
+
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
