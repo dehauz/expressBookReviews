@@ -44,4 +44,43 @@ app.get("/isbn2/:isbn", (req, res) => {
     res.json(books[isbn]);
 });
 
+// Get book details based on author
+app.get('/author2/:author',function (req, res) {
+  //Write your code here
+    const author = req.params.author;
+    // 1. Obtain all the keys for the 'books' object
+    const keys = Object.keys(books);
+
+    const results = [];
+
+    // 2. Iterate through the books and check the author
+    for (const key of keys) {
+        const book = books[key];
+
+        if (book.author === author) {
+            results.push(book);
+        }
+    }
+    res.json(results);
+});
+
+app.get('/title2/:title',function (req, res) {
+    //Write your code here
+    const title = req.params.title;
+    // 1. Obtain all the keys for the 'books' object
+    const keys = Object.keys(books);
+  
+    const results = [];
+  
+    // 2. Iterate through the books and check the title
+    for (const key of keys) {
+        const book = books[key];
+  
+        if (book.title === title) {
+            results.push(book);
+        }
+    }
+    res.json(results);
+  });
+
 app.listen(PORT,()=>console.log("Server is running"));

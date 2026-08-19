@@ -71,40 +71,32 @@ public_users.get('/isbn/:isbn',function (req, res) {
 public_users.get('/author/:author',function (req, res) {
   //Write your code here
     const author = req.params.author;
-    // 1. Obtain all the keys for the 'books' object
-    const keys = Object.keys(books);
-
-    const results = [];
-
-    // 2. Iterate through the books and check the author
-    for (const key of keys) {
-        const book = books[key];
-
-        if (book.author === author) {
-            results.push(book);
-        }
-    }
-    res.send(JSON.stringify(results,null,4));
+    axios.get(`http://localhost:5000/author2/${author}`)
+        .then(response => {
+            res.send(JSON.stringify(response.data,null,4));
+        })
+        .catch(error => {
+            res.status(500).json({
+                message: "Error retrieving books",
+                error: error.message
+            });
+        });
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
   const title = req.params.title;
-  // 1. Obtain all the keys for the 'books' object
-  const keys = Object.keys(books);
-
-  const results = [];
-
-  // 2. Iterate through the books and check the title
-  for (const key of keys) {
-      const book = books[key];
-
-      if (book.title === title) {
-          results.push(book);
-      }
-  }
-  res.send(JSON.stringify(results,null,4));
+  axios.get(`http://localhost:5000/title2/${title}`)
+  .then(response => {
+      res.send(JSON.stringify(response.data,null,4));
+  })
+  .catch(error => {
+      res.status(500).json({
+          message: "Error retrieving books",
+          error: error.message
+      });
+  });
 });
 
 //  Get book review
